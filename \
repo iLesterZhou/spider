@@ -1,0 +1,16 @@
+#-*- coding = utf-8 -*-
+from bs4 import BeautifulSoup
+file = open("./baidu.html","rb")
+html = file.read()
+bs = BeautifulSoup(html,"html.parser")
+#print(bs.head)
+#Tag 标签及其内容,只能拿到相同标签中第一个内容
+#print(bs.title.string)
+#2NavigableString 标签里的内容（字符串）
+#print(type(bs))
+#3BeautifulSoup 表示整个文档
+#print(bs.name)
+print(bs.a.string)
+#Comment 注释，是一个特殊的NavigableString,输出的内容不包含注释符号
+#文档的遍历
+print(bs.head.contens)
