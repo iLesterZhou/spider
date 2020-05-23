@@ -7,10 +7,12 @@ import sqlite3
 def main():
     baseurl="https://movie.douban.com/top250?start="
     datalist = getData(baseurl)
-    savepath = ".\\豆瓣电影Top250.xls"
-	#保存数据
-	#saveData(savepath)
-	#askURL("https://movie.douban.com/top250?start=0")
+    savepath = "豆瓣电影Top250.xls"
+    #保存数据
+    saveData(datalist,savepath)
+
+
+    #askURL("https://movie.douban.com/top250?start=0")
 
 #定义全局变量
 #获取影片详情链接的规则
@@ -70,7 +72,7 @@ def getData(baseurl):
             judgeNum = re.findall(findJudge,item)
             data.append(judgeNum)                        #添加评论人数
 
-            inq = re.findall(findIng,item)[0]
+            inq = re.findall(findIng,item)
             if len(inq) != 0:
                 inq = inq[0].replace("。","")            #去掉句号
                 data.append(inq)                         #添加概述
@@ -109,8 +111,20 @@ def askURL(url):
     return html
 
 #3，保存数据
-def saveData(savepath):
+def saveData(datalist,savepath):
     print("save....")
+    book = xlwt.Workbook(encoding="utf-8",style_compression=0)
+    sheet = book.add_sheet('豆瓣电影Top250',cell_overwrite_ok=True)
+    col = ("电影详情链接","图片链接","影片中文名","影片外国名","评分","评价人数","概述","相关信息")
+    for i in range(0,8):
+        sheet.write(0,i,col[i])         #列名
+    for i in range(0,250):
+        print("第%d条"%(i+1))               #打印进度
+        data = datalist[i]
+        for j in range(0,8):
+            sheet.write(i+1,j,data[j])  #数据
+    book.save(savepath)                 #保存
+
 
 
 
@@ -118,4 +132,4 @@ def saveData(savepath):
 if __name__ == "__main__":
 #调用函数
     main()
- 
+    print("报告！爬取完毕") 
