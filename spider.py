@@ -1,4 +1,4 @@
-#-- coding:UTF-8 --
+#-*- coding:UTF-8 -*-
 from bs4 import BeautifulSoup
 import re
 import urllib.request,urllib.error
@@ -24,7 +24,7 @@ findTitle = re.compile(r'<span class="title">(.*)</span>')
 #影片的评分
 findRating = re.compile(r'<span class="rating_num" property="v:average">(.*)</span>')
 #找到评价人数
-findJudge = re.compile(r'<span>(\d*)人评论</span>')
+findJudge = re.compile(r'<span>(\d*)人评价</span>')
 #找到概况
 findIng = re.compile(r'<span class="inq">(.*)</span>')
 #找到影片的相关内容
@@ -69,7 +69,7 @@ def getData(baseurl):
             rating = re.findall(findRating,item)[0]
             data.append(rating)                          #添加评分
 
-            judgeNum = re.findall(findJudge,item)
+            judgeNum = re.findall(findJudge,item)[0]
             data.append(judgeNum)                        #添加评论人数
 
             inq = re.findall(findIng,item)
@@ -102,7 +102,7 @@ def askURL(url):
     try:
         response = urllib.request.urlopen(request)
         html = response.read().decode("utf-8")
-        print(html)
+        #print(html)
     except urllib.error.URLError as e:
         if hasattr(e,"code"):
             print(e.code)
